@@ -17,6 +17,7 @@ phases:
 
 artifacts:
   files:
+    - target/surefire-reports/*.xml
     - target/*.jar
 
 
