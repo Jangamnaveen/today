@@ -6,7 +6,7 @@ phases:
     runtime-versions:
       java: corretto17
 
-  pre-build:
+  pre_build:
     commands:
     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 225187408292.dkr.ecr.us-east-1.amazonaws.com
   
