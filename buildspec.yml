@@ -1,35 +1,29 @@
 version: 0.2
 
-phases:
+env:
+  variables:
+    AWS_REGION: ap-south-1
 
-  install:
-    runtime-versions:
-      java: corretto17
+phases:
 
   pre_build:
     commands:
-    - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 225187408292.dkr.ecr.us-east-1.amazonaws.com
-  
+      - echo Logging in to Amazon ECR
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
   build:
     commands:
-      - echo Build started
-      - mvn clean install
-      - docker build -t first-maven .
-      - docker tag first-maven:latest 225187408292.dkr.ecr.us-east-1.amazonaws.com/first-maven:latest
-      - docker push 225187408292.dkr.ecr.us-east-1.amazonaws.com/first-maven:latest
+      - echo Build Maven project
+      - mvn clean package
+
+      - echo Build Docker image
+      - docker build -t maven-image .
+
+      - echo Tag Docker image
+      - docker tag maven-image:latest $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/maven-image:latest
 
   post_build:
     commands:
-      - echo Build completed
-
-artifacts:
-  files:
-    - target/surefire-reports/*.xml
-    - target/*.jar
-
-
-  reports:
-    junit_reports:
-      files:
-      - target/surefire-reports/*.xml
+      - echo Push Docker image
+      - docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/maven-image:latest
