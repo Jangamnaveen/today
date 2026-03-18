@@ -23,8 +23,8 @@ phases:
 
   post_build:
     commands:
-      - cd target/
-      - ls 
+      # - cd target/
+      # - ls 
       - echo store artifact in the S3 bucket
       - aws s3 cp target/*.jar s3://todaytask-225187408292-us-east-1-an
       - echo test reports store in s3 bucket
