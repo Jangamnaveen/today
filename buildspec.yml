@@ -19,7 +19,7 @@ phases:
       - mvn install
 
 
-  post_build:
-    commands:
-      - echo store artifact in the S3 bucket
-      - aws s3 cp target/*.jar s3://todaytask-225187408292-us-east-1-an  
+        #post_build:
+        #commands:
+        # - echo store artifact in the S3 bucket
+        #- aws s3 cp target/*.jar s3://todaytask-225187408292-us-east-1-an  
