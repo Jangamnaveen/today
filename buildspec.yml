@@ -10,15 +10,13 @@ phases:
   pre_build:
     commands:
       - echo Clean the target folder using maven clean command
-      - mvn clean package
+      - mvn clean
     
 
   build:
     commands:
       - echo testing started
-      - mvn test
-      - echo Build Maven project
-      - mvn install
+      - mvn clean package
 
 
   post_build:
