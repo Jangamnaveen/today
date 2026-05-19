@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="RedshiftPOC"
+         basedir="."
+         default="update-db">
+
+    <!-- COPY FILES -->
+
+    <target name="copyScripts">
+
+    <echo message="********** COPYING REQUIRED RELEASE FILES **********"/>
+
+    <delete dir="./sql"/>
+
+    <mkdir dir="./sql"/>
+
+    <!-- Copy target release folder -->
+
+    <copy todir="./sql">
+
+        <fileset dir="./dbscripts/${newReleaseVersion}">
+            <include name="*.sql"/>
+        </fileset>
+
+    </copy>
+
+</target>
+
+    <target name="info-db">
+
+        <exec executable="/root/tools/flyway/flyway"
+              failonerror="true">
+
+            <arg value="info"/>
+            <arg value="-configFiles=conf/qa_db.properties"/>
+
+        </exec>
+
+    </target>
+
+
+
+    <target name="migrate-db">
+
+        <echo message=" "/>
+        <echo message="********** RUNNING MIGRATION **********"/>
+
+        <exec executable="/root/tools/flyway/flyway"
+              failonerror="true">
+
+            <arg value="migrate"/>
+            <arg value="-configFiles=conf/qa_db.properties"/>
+
+        </exec>
+
+    </target>
+
+
+    
+
+    <target name="update-db">
+
+
+        <antcall target="copyScripts"/>
+
+
+        <echo message=" "/>
+        <echo message="********** DB STATUS BEFORE MIGRATION **********"/>
+
+        <antcall target="info-db"/>
+
+        <antcall target="migrate-db"/>
+
+
+       <echo message=" "/>
+        <echo message="********** DB STATUS AFTER MIGRATION **********"/>
+
+        <antcall target="info-db"/>
+
+    </target>
+
+</project>

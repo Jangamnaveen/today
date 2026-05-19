@@ -1,0 +1,2 @@
+ALTER TABLE employee
+ADD COLUMN transport VARCHAR(100);
