@@ -28,7 +28,7 @@
 
     <target name="info-db">
 
-        <exec executable="/root/tools/flyway/flyway"
+        <exec executable="/root/redshift-poc/tools/flyway/flyway"
               failonerror="true">
 
             <arg value="info"/>
@@ -45,7 +45,7 @@
         <echo message=" "/>
         <echo message="********** RUNNING MIGRATION **********"/>
 
-        <exec executable="/root/tools/flyway/flyway"
+        <exec executable="/root/redshift-poc/tools/flyway/flyway"
               failonerror="true">
 
             <arg value="migrate"/>
